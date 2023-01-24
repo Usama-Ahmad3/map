@@ -42,7 +42,7 @@ class _LogIn_pageState extends State<LogIn_page> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SignUp(),
+                          builder: (context) => const SigUp(),
                         ));
                   },
                   child: const Text(
@@ -60,7 +60,7 @@ class _LogIn_pageState extends State<LogIn_page> {
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 6),
-                height: MediaQuery.of(context).size.height * 0.85,
+                height: MediaQuery.of(context).size.height * 0.80,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),
