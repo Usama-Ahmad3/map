@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:world_explorer/logIn.dart';
 import 'package:world_explorer/signUpPage.dart';
 
@@ -15,6 +16,7 @@ class Forget extends StatefulWidget {
 class _ForgetState extends State<Forget> {
   var userName = TextEditingController();
   var password = TextEditingController();
+  var rpassword = TextEditingController();
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class _ForgetState extends State<Forget> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Log In',
+          'Password Reset',
           style: TextStyle(fontSize: 35),
         ),
       ),
@@ -92,102 +94,124 @@ class _ForgetState extends State<Forget> {
                           color: Colors.white70,
                         ),
                         padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Welcome To World Explorer',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            AnimatedTextKit(
-                              repeatForever: true,
-                              animatedTexts: [
-                                TypewriterAnimatedText('Believe in yourself.'),
-                                TypewriterAnimatedText(
-                                    'You are braver than you think, '),
-                                TypewriterAnimatedText(
-                                    ' more talented than you know,'),
-                                TypewriterAnimatedText(
-                                    'capable of more than you imagine.'),
-                              ],
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'UserName Cannot Be Empty';
-                                }
-                                return null;
-                              },
-                              controller: userName,
-                              decoration: const InputDecoration(
-                                hintText: 'Usama Ahmad',
-                                prefixIcon: Icon(Icons.comment),
-                                labelText: 'Enter UserName',
-                                border: OutlineInputBorder(),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Welcome To World Explorer',
+                                style: TextStyle(fontSize: 25),
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Password Cannot Be Empty';
-                                }
-                                return null;
-                              },
-                              controller: password,
-                              decoration: const InputDecoration(
-                                hintText: '123456',
-                                labelText: 'Enter Password',
-                                prefixIcon: Icon(Icons.password),
-                                border: OutlineInputBorder(),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.02),
+                              AnimatedTextKit(
+                                repeatForever: true,
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                      'Believe in yourself.'),
+                                  TypewriterAnimatedText(
+                                      'You are braver than you think, '),
+                                  TypewriterAnimatedText(
+                                      ' more talented than you know,'),
+                                  TypewriterAnimatedText(
+                                      'capable of more than you imagine.'),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Password Cannot Be Empty';
-                                }
-                                return null;
-                              },
-                              controller: password,
-                              decoration: const InputDecoration(
-                                hintText: '123456',
-                                labelText: 'Confirm Password',
-                                prefixIcon: Icon(Icons.password),
-                                border: OutlineInputBorder(),
-                              ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            ElevatedButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LogIn_page()));
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'UserName Cannot Be Empty';
                                   }
+                                  return null;
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.green,
+                                controller: userName,
+                                decoration: const InputDecoration(
+                                  hintText: 'Usama Ahmad',
+                                  prefixIcon: Icon(Icons.comment),
+                                  labelText: 'Enter UserName',
+                                  border: OutlineInputBorder(),
                                 ),
-                                child: const Text(
-                                  'Reset',
-                                  style: TextStyle(fontSize: 25),
-                                ))
-                          ],
+                              ),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Password Cannot Be Empty';
+                                  }
+                                  return null;
+                                },
+                                controller: password,
+                                decoration: const InputDecoration(
+                                  hintText: '123456',
+                                  labelText: 'Enter Password',
+                                  prefixIcon: Icon(Icons.password),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Password Field Cannot Be Empty';
+                                  }
+                                  return null;
+                                },
+                                controller: rpassword,
+                                decoration: const InputDecoration(
+                                  hintText: '123456',
+                                  labelText: 'Confirm Password',
+                                  prefixIcon: Icon(Icons.password),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      SharedPreferences _pref =
+                                          await SharedPreferences.getInstance();
+                                      var user = _pref.getString('keyU');
+                                      _pref.remove('keyP');
+                                      _pref.setString(
+                                          'keyP', password.text.toString());
+                                      if (user.toString() ==
+                                          userName.text.toString()) {
+                                        if (password.text.toString() ==
+                                            rpassword.text.toString()) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const LogIn_page()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      'Passwords Not Match')));
+                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    'UserName Not Match')));
+                                      }
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  child: const Text(
+                                    'Reset',
+                                    style: TextStyle(fontSize: 25),
+                                  ))
+                            ],
+                          ),
                         ),
                       ),
                     )

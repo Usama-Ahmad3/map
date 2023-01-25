@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:world_explorer/logIn.dart';
 
 // ignore: camel_case_types
@@ -21,7 +22,7 @@ class _SigUpState extends State<SigUp> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Log In',
+          'Sign Up',
           style: TextStyle(fontSize: 35),
         ),
       ),
@@ -65,84 +66,93 @@ class _SigUpState extends State<SigUp> {
                           color: Colors.white70,
                         ),
                         padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Welcome To World Explorer',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            AnimatedTextKit(
-                              repeatForever: true,
-                              animatedTexts: [
-                                TypewriterAnimatedText('Believe in yourself.'),
-                                TypewriterAnimatedText(
-                                    'You are braver than you think, '),
-                                TypewriterAnimatedText(
-                                    ' more talented than you know,'),
-                                TypewriterAnimatedText(
-                                    'capable of more than you imagine.'),
-                              ],
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'UserName Cannot Be Empty';
-                                }
-                                return null;
-                              },
-                              controller: userName,
-                              decoration: const InputDecoration(
-                                hintText: 'Usama Ahmad',
-                                prefixIcon: Icon(Icons.comment),
-                                labelText: 'Enter UserName',
-                                border: OutlineInputBorder(),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Welcome To World Explorer',
+                                style: TextStyle(fontSize: 25),
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Password Cannot Be Empty';
-                                }
-                                return null;
-                              },
-                              controller: password,
-                              decoration: const InputDecoration(
-                                hintText: '123456',
-                                labelText: 'Enter Password',
-                                prefixIcon: Icon(Icons.password),
-                                border: OutlineInputBorder(),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              AnimatedTextKit(
+                                repeatForever: true,
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                      'Believe in yourself.'),
+                                  TypewriterAnimatedText(
+                                      'You are braver than you think, '),
+                                  TypewriterAnimatedText(
+                                      ' more talented than you know,'),
+                                  TypewriterAnimatedText(
+                                      'capable of more than you imagine.'),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01),
-                            ElevatedButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LogIn_page()));
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'UserName Cannot Be Empty';
                                   }
+                                  return null;
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.green,
+                                controller: userName,
+                                decoration: const InputDecoration(
+                                  hintText: 'Usama Ahmad',
+                                  prefixIcon: Icon(Icons.comment),
+                                  labelText: 'Enter UserName',
+                                  border: OutlineInputBorder(),
                                 ),
-                                child: const Text(
-                                  'SignUp',
-                                  style: TextStyle(fontSize: 25),
-                                ))
-                          ],
+                              ),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Password Cannot Be Empty';
+                                  }
+                                  return null;
+                                },
+                                controller: password,
+                                decoration: const InputDecoration(
+                                  hintText: '123456',
+                                  labelText: 'Enter Password',
+                                  prefixIcon: Icon(Icons.password),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      SharedPreferences _prefs =
+                                          await SharedPreferences.getInstance();
+                                      _prefs.setString(
+                                          'keyU', userName.text.toString());
+                                      _prefs.setString(
+                                          'keyP', password.text.toString());
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LogIn_page()));
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  child: const Text(
+                                    'SignUp',
+                                    style: TextStyle(fontSize: 25),
+                                  ))
+                            ],
+                          ),
                         ),
                       ),
                     )

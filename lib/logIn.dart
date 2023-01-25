@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:world_explorer/forgetpassword.dart';
 import 'package:world_explorer/map.dart';
 import 'package:world_explorer/signUpPage.dart';
@@ -93,102 +94,126 @@ class _LogIn_pageState extends State<LogIn_page> {
                           color: Colors.white70,
                         ),
                         padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Welcome To World Explorer',
-                              style: TextStyle(fontSize: 25),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            AnimatedTextKit(
-                              repeatForever: true,
-                              animatedTexts: [
-                                TypewriterAnimatedText('Believe in yourself.'),
-                                TypewriterAnimatedText(
-                                    'You are braver than you think, '),
-                                TypewriterAnimatedText(
-                                    ' more talented than you know,'),
-                                TypewriterAnimatedText(
-                                    'capable of more than you imagine.'),
-                              ],
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'UserName Cannot Be Empty';
-                                }
-                                return null;
-                              },
-                              controller: userName,
-                              decoration: const InputDecoration(
-                                hintText: 'Usama Ahmad',
-                                prefixIcon: Icon(Icons.comment),
-                                labelText: 'Enter UserName',
-                                border: OutlineInputBorder(),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const Text(
+                                'Welcome To World Explorer',
+                                style: TextStyle(fontSize: 25),
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            TextFormField(
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Password Cannot Be Empty';
-                                }
-                                return null;
-                              },
-                              controller: password,
-                              decoration: const InputDecoration(
-                                hintText: '123456',
-                                labelText: 'Enter Password',
-                                prefixIcon: Icon(Icons.password),
-                                border: OutlineInputBorder(),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              AnimatedTextKit(
+                                repeatForever: true,
+                                animatedTexts: [
+                                  TypewriterAnimatedText(
+                                      'Believe in yourself.'),
+                                  TypewriterAnimatedText(
+                                      'You are braver than you think, '),
+                                  TypewriterAnimatedText(
+                                      ' more talented than you know,'),
+                                  TypewriterAnimatedText(
+                                      'capable of more than you imagine.'),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.01),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 100.0),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Forget(),
-                                      ));
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'UserName Cannot Be Empty';
+                                  }
+                                  return null;
                                 },
-                                child: const Text('Forget Password',
-                                    style: TextStyle(
-                                        fontSize: 15, color: Colors.redAccent)),
+                                controller: userName,
+                                decoration: const InputDecoration(
+                                  hintText: 'Usama Ahmad',
+                                  prefixIcon: Icon(Icons.comment),
+                                  labelText: 'Enter UserName',
+                                  border: OutlineInputBorder(),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.03),
-                            ElevatedButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              TextFormField(
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Password Cannot Be Empty';
+                                  }
+                                  return null;
+                                },
+                                controller: password,
+                                decoration: const InputDecoration(
+                                  hintText: '123456',
+                                  labelText: 'Enter Password',
+                                  prefixIcon: Icon(Icons.password),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.01),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 100.0),
+                                child: InkWell(
+                                  onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const MapScreen()));
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.green,
+                                          builder: (context) => const Forget(),
+                                        ));
+                                  },
+                                  child: const Text('Forget Password',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.redAccent)),
                                 ),
-                                child: const Text(
-                                  'SignIn',
-                                  style: TextStyle(fontSize: 25),
-                                ))
-                          ],
+                              ),
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height *
+                                      0.03),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    if (formKey.currentState!.validate()) {
+                                      SharedPreferences _prefs =
+                                          await SharedPreferences.getInstance();
+                                      var user = _prefs.getString('keyU');
+                                      var pass = _prefs.getString('keyP');
+                                      if (user.toString() ==
+                                          userName.text.toString()) {
+                                        if (pass.toString() ==
+                                            password.text.toString()) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const MapScreen()));
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      'Password Not Match')));
+                                        }
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: Text(
+                                                    'UserName Not Match')));
+                                      }
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  child: const Text(
+                                    'SignIn',
+                                    style: TextStyle(fontSize: 25),
+                                  ))
+                            ],
+                          ),
                         ),
                       ),
                     )
