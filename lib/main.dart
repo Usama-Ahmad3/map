@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:world_explorer/logIn.dart';
+import 'package:world_explorer/routes/routeName.dart';
+import 'package:world_explorer/routes/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LogIn_page(),
+      initialRoute: RoutesName.logIn,
+      onGenerateRoute: Routes.generateRoutes,
     );
   }
 }

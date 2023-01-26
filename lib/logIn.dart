@@ -1,9 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:world_explorer/forgetpassword.dart';
-import 'package:world_explorer/map.dart';
-import 'package:world_explorer/signUpPage.dart';
+import 'package:world_explorer/routes/routeName.dart';
 
 // ignore: camel_case_types
 class LogIn_page extends StatefulWidget {
@@ -40,11 +38,7 @@ class _LogIn_pageState extends State<LogIn_page> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SigUp(),
-                        ));
+                    Navigator.pushNamed(context, RoutesName.signUpPage);
                   },
                   child: const Text(
                     'SignUp',
@@ -160,11 +154,8 @@ class _LogIn_pageState extends State<LogIn_page> {
                                 padding: const EdgeInsets.only(left: 100.0),
                                 child: InkWell(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => const Forget(),
-                                        ));
+                                    Navigator.pushNamed(
+                                        context, RoutesName.forgetpassword);
                                   },
                                   child: const Text('Forget Password',
                                       style: TextStyle(
@@ -178,28 +169,28 @@ class _LogIn_pageState extends State<LogIn_page> {
                               ElevatedButton(
                                   onPressed: () async {
                                     if (formKey.currentState!.validate()) {
-                                      SharedPreferences _prefs =
+                                      SharedPreferences prefs =
                                           await SharedPreferences.getInstance();
-                                      var user = _prefs.getString('keyU');
-                                      var pass = _prefs.getString('keyP');
+                                      var user = prefs.getString('keyU');
+                                      var pass = prefs.getString('keyP');
                                       if (user.toString() ==
                                           userName.text.toString()) {
                                         if (pass.toString() ==
                                             password.text.toString()) {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const MapScreen()));
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pushNamed(
+                                              context, RoutesName.map);
                                         } else {
+                                          // ignore: use_build_context_synchronously
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
+                                              .showSnackBar(const SnackBar(
                                                   content: Text(
                                                       'Password Not Match')));
                                         }
                                       } else {
+                                        // ignore: use_build_context_synchronously
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
+                                            .showSnackBar(const SnackBar(
                                                 content: Text(
                                                     'UserName Not Match')));
                                       }
